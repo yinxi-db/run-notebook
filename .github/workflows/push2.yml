@@ -31,7 +31,11 @@ jobs:
           access-control-list-json: >
             [
               {
-                "group_name": "users",
+                "user_name": "brooke.wenig@databrick.com",
                 "permission_level": "CAN_VIEW"
+              },
+              {
+                "user_name": "yinxi.zhang@databrick.com",
+                "permission_level": "IS_OWNER"
               }
             ]
