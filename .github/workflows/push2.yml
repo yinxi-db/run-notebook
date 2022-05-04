@@ -1,0 +1,37 @@
+name: Run a notebook in the current repo on PRs
+
+on:
+  push
+
+env:
+  DATABRICKS_HOST: https://adb-2541733722036151.11.azuredatabricks.net/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Trigger notebook from PR branch
+        uses: databricks/run-notebook@v0
+        with:
+          local-notebook-path: notebooks/MainNotebook.py
+          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+          # Alternatively, specify an existing-cluster-id to run against an existing cluster.
+          # The cluter JSON below is for Azure Databricks. On AWS and GCP, set
+          # node_type_id to an appropriate node type, e.g. "i3.xlarge" for
+          # AWS or "n1-highmem-4" for GCP
+          existing-cluster-id: 0223-180910-mug84
+          access-control-list-json: >
+            [
+              {
+                "group_name": "users",
+                "permission_level": "CAN_VIEW"
+              }
+            ]
