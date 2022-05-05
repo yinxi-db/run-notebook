@@ -30,6 +30,9 @@ jobs:
           echo "DATABRICKS_TOKEN=$(az account get-access-token \
           --resource=2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
           --query accessToken -o tsv)" >> $GITHUB_ENV
+      - name: echo token
+        run: |
+          echo ${{ env.DATABRICKS_TOKEN }}
       - name: Trigger notebook from PR branch
         uses: databricks/run-notebook@v0
         with:
