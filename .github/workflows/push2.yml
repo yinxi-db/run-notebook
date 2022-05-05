@@ -35,6 +35,10 @@ jobs:
                 "permission_level": "CAN_VIEW"
               },
               {
+                "group_name": "users",
+                "permission_level": "CAN_VIEW"
+              },
+              {
                 "user_name": "yinxi.zhang@databrick.com",
                 "permission_level": "IS_OWNER"
               }
