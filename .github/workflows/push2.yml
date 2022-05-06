@@ -40,6 +40,6 @@ jobs:
             },
             {
               "user_name": "yinxi.zhang@databricks.com",
-              "permission_level": "IS_OWNER"
+              "permission_level": "CAN_MANAGE"
             }
             ]
