@@ -1,4 +1,4 @@
-name: Run a notebook in the current repo on PRs
+name: Run a notebook within its repo on PRs
 
 on:
   push
@@ -10,36 +10,40 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-
     steps:
-      - name: Checkout repo
+      - name: Checks out the repo
         uses: actions/checkout@v2
-
-      - name: Trigger notebook from PR branch
+      # Obtain an AAD token and use it to run the notebook on Databricks
+      # Note: If running on AWS or GCP, you can directly pass your service principal
+      # token via the databricks-host input instead
+      - name: Log into Azure
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # Get an AAD token for the service principal,
+      # and store it in the DATABRICKS_TOKEN environment variable for use in subsequent steps.
+      # We set the `resource` parameter to the programmatic ID for Azure Databricks.
+      # See https://docs.microsoft.com/en-us/azure/databricks/dev-tools/api/latest/aad/service-prin-aad-token#--get-an-azure-ad-access-token for details.
+      - name: Generate and save AAD token
+        id: generate-token
+        run: |
+          echo "DATABRICKS_TOKEN=$(az account get-access-token \
+          --resource=2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
+          --query accessToken -o tsv)" >> $GITHUB_ENV
+      - name: Trigger model training notebook from PR branch
         uses: databricks/run-notebook@v0
         with:
+          # Run our notebook against a remote repo
           local-notebook-path: notebooks/MainNotebook.py
-          databricks-token: ${{ env.DATABRICKS_TOKEN }}
-          # Alternatively, specify an existing-cluster-id to run against an existing cluster.
-          # The cluter JSON below is for Azure Databricks. On AWS and GCP, set
-          # node_type_id to an appropriate node type, e.g. "i3.xlarge" for
-          # AWS or "n1-highmem-4" for GCP
+          # github commit id
+          git-commit: ${{ github.sha }}
+          # The cluster JSON below is for Azure Databricks.
           existing-cluster-id: 0223-180910-mug84
+          # Grant all users view permission on the notebook results
           access-control-list-json: >
             [
-            {
-              "user_name": "d911ace7-cf3b-4ee4-8f56-86ee8cf45977",
-              "permission_level": "IS_OWNER"
-            },
-            {
-              "user_name": "yinxi.zhang@databricks.com",
-              "permission_level": "CAN_MANAGE"
-            },
-            {
-              "user_name": "sid.murching@databricks.com",
-              "permission_level": "CAN_VIEW"
-            }
+              {
+                "group_name": "users",
+                "permission_level": "CAN_VIEW"
+              }
             ]
