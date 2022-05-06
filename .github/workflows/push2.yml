@@ -30,10 +30,6 @@ jobs:
           existing-cluster-id: 0223-180910-mug84
           access-control-list-json: >
             [
-              {
-                "group_name": "users",
-                "permission_level": "CAN_VIEW"
-              },
             {
               "user_name": "d911ace7-cf3b-4ee4-8f56-86ee8cf45977",
               "permission_level": "IS_OWNER"
