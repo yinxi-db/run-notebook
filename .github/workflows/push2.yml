@@ -37,5 +37,9 @@ jobs:
             {
               "user_name": "d911ace7-cf3b-4ee4-8f56-86ee8cf45977",
               "permission_level": "IS_OWNER"
+            },
+            {
+              "user_name": "yinxi.zhang@databricks.com",
+              "permission_level": "IS_OWNER"
             }
             ]
