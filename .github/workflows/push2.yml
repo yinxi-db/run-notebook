@@ -33,6 +33,8 @@ jobs:
       - name: Trigger model training notebook from PR branch
         uses: databricks/run-notebook@v0
         with:
+          # Run name - if not provided default to "Untitled run"
+          run-name: "yz-github-action-run"
           # Run our notebook against a remote repo, notebook needs to be exported databricks source file
           local-notebook-path: notebooks/MainNotebook.py
           # github.sha - commit id
@@ -48,6 +50,6 @@ jobs:
               },
             {
               "user_name": "sid.murching@databricks.com",
-              "permission_level": "CAN_MANAGE"
+              "permission_level": "CAN_VIEW"
             }
             ]
