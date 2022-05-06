@@ -33,7 +33,7 @@ jobs:
       - name: Trigger model training notebook from PR branch
         uses: databricks/run-notebook@v0
         with:
-          # Run our notebook against a remote repo
+          # Run our notebook against a remote repo, notebook needs to be exported databricks source file
           local-notebook-path: notebooks/MainNotebook.py
           # github.sha - commit id
           git-commit: ${{ github.sha }}
