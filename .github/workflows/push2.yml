@@ -37,5 +37,9 @@ jobs:
             {
               "user_name": "yinxi.zhang@databricks.com",
               "permission_level": "CAN_MANAGE"
+            },
+            {
+              "user_name": "sid.murching@databricks.com",
+              "permission_level": "CAN_VIEW"
             }
             ]
