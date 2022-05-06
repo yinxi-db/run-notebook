@@ -35,7 +35,7 @@ jobs:
         with:
           # Run our notebook against a remote repo
           local-notebook-path: notebooks/MainNotebook.py
-          # github commit id
+          # github.sha - commit id
           git-commit: ${{ github.sha }}
           # The cluster JSON below is for Azure Databricks.
           existing-cluster-id: 0223-180910-mug84
